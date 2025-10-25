@@ -112,6 +112,7 @@ if user_menu == 'Country Wise Analysis':
 
     st.markdown(f"### 🏋️‍♀️ {selected_country} excels in the following sports")
     pt = helper.country_event_heatmap(df, selected_country)
+    pt = pt.apply(pd.to_numeric, errors='coerce').fillna(0)
     fig, ax = plt.subplots(figsize=(18, 12))
     sns.heatmap(pt, annot=True, cmap="Greens")
     st.pyplot(fig)
