@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medal Tally</title>
+</head>
+<body>
+
+<h1>Medal Tally</h1>
+
+<form method="get">
+    <label>Year:</label>
+    <select name="year">
+        {% for y in years %}
+            <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>
+                {{ y }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label>Country:</label>
+    <select name="country">
+        {% for c in countries %}
+            <option value="{{ c }}" {% if c == selected_country %}selected{% endif %}>
+                {{ c }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Show</button>
+</form>
+
+<br>
+
+{% if medal_df is not none %}
+    {{ medal_df.to_html(index=False) }}
+{% endif %}
+
+<br>
+<a href="/">⬅ Back to Home</a>
+
+</body>
+</html>

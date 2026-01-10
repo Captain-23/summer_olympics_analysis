@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Overall Analysis{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4">Overall Olympics Analysis</h1>
+
+<div class="row text-center mb-4">
+    <div class="col">Editions<br><b>{{ editions }}</b></div>
+    <div class="col">Cities<br><b>{{ cities }}</b></div>
+    <div class="col">Sports<br><b>{{ sports }}</b></div>
+    <div class="col">Events<br><b>{{ events }}</b></div>
+    <div class="col">Athletes<br><b>{{ athletes }}</b></div>
+    <div class="col">Nations<br><b>{{ nations }}</b></div>
+</div>
+
+<hr>
+
+<h3>Nations Over Time</h3>
+{{ fig_nations | safe }}
+
+<hr>
+
+<h3>Events Over Time</h3>
+{{ fig_events | safe }}
+
+<hr>
+
+<h3>Athletes Over Time</h3>
+{{ fig_athletes | safe }}
+
+{% endblock %}

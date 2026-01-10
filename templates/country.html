@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Country Wise Analysis</title>
+</head>
+<body>
+
+<h1>Country Wise Analysis</h1>
+
+<form method="get">
+    <label>Select Country:</label>
+    <select name="country">
+        {% for c in countries %}
+            <option value="{{ c }}" {% if c == selected_country %}selected{% endif %}>
+                {{ c }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Show</button>
+</form>
+
+<hr>
+
+<h2>Year-wise Medal Tally</h2>
+{% if fig_line %}
+    {{ fig_line | safe }}
+{% endif %}
+
+<hr>
+
+<h2>Top Athletes</h2>
+{{ top10_df.to_html(index=False) }}
+
+<hr>
+
+<h2>Sport-wise Medal Heatmap</h2>
+{% if fig_heatmap %}
+    {{ fig_heatmap | safe }}
+{% endif %}
+
+<br>
+<a href="/">⬅ Back to Home</a>
+
+</body>
+</html>

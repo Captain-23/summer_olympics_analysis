@@ -1,0 +1,42 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Athlete Wise Analysis</title>
+</head>
+<body>
+
+<h1>Athlete Wise Analysis</h1>
+
+<form method="get">
+    <label>Select Sport:</label>
+    <select name="sport">
+        {% for s in sports %}
+            <option value="{{ s }}" {% if s == selected_sport %}selected{% endif %}>
+                {{ s }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Show</button>
+</form>
+
+<hr>
+
+<h2>Most Successful Athletes</h2>
+{{ top_athletes_df.to_html(index=False) }}
+
+<hr>
+
+<h2>Height vs Weight</h2>
+{% if fig_hw %}
+    {{ fig_hw | safe }}
+{% endif %}
+
+<hr>
+
+<h2>Men vs Women Participation</h2>
+{{ fig_gender | safe }}
+<br>
+<a href="/">⬅ Back to Home</a>
+
+</body>
+</html>
