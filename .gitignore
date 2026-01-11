@@ -40,3 +40,6 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+# ===== Node / Frontend =====
+node_modules/
