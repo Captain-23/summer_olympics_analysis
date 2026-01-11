@@ -1,45 +1,330 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Country Wise Analysis</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Analysis - Olympics Analytics Dashboard</title>
+    <meta name="description" content="Analyze Olympic performance country-wise with medal trends, top athletes, and sport-wise heatmaps.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
 
-<h1>Country Wise Analysis</h1>
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">
+            <div class="logo-icon">
+                <img src="{{ url_for('static', filename='images/olympic_logo.png') }}"
+                     alt="Olympic Logo"
+                     class="nav-logo-img">
+            </div>
+            <span class="logo-text">Olympics Analytics</span>
+        </a>
 
-<form method="get">
-    <label>Select Country:</label>
-    <select name="country">
-        {% for c in countries %}
-            <option value="{{ c }}" {% if c == selected_country %}selected{% endif %}>
-                {{ c }}
-            </option>
-        {% endfor %}
-    </select>
-    <button type="submit">Show</button>
-</form>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/medal-tally" class="nav-link">Medal Tally</a>
+            <a href="/overall" class="nav-link">Overall Analysis</a>
+            <a href="/country" class="nav-link active">Country Analysis</a>
+            <a href="/athlete" class="nav-link">Athlete Analysis</a>
+        </div>
 
-<hr>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </div>
 
-<h2>Year-wise Medal Tally</h2>
-{% if fig_line %}
-    {{ fig_line | safe }}
-{% endif %}
+    <div class="mobile-nav hidden" id="mobileNav">
+        <a href="/" class="mobile-nav-link">Home</a>
+        <a href="/medal-tally" class="mobile-nav-link">Medal Tally</a>
+        <a href="/overall" class="mobile-nav-link">Overall Analysis</a>
+        <a href="/country" class="mobile-nav-link active">Country Analysis</a>
+        <a href="/athlete" class="mobile-nav-link">Athlete Analysis</a>
+    </div>
+</nav>
 
-<hr>
+<!-- ================= PAGE HEADER ================= -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <span class="badge badge-gold">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="2" y1="12" x2="22" y2="12"/>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
+             15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </svg>
+  Country Analysis
+</span>
+            <h1 class="page-title">Country Wise Olympic Performance</h1>
+            <p class="page-subtitle">
+                Explore medal trends, top athletes, and sport-wise dominance for individual countries.
+            </p>
+        </div>
+    </div>
+</section>
 
-<h2>Top Athletes</h2>
-{{ top10_df.to_html(index=False) }}
+<!-- ================= MAIN CONTENT ================= -->
+<main class="main-content">
+    <div class="container">
 
-<hr>
+        <!-- Filter -->
+        <form method="get" class="filter-bar">
+            <div class="filter-group">
+                <label class="filter-label">Select Country</label>
+                <select name="country" class="filter-select">
+                    {% for c in countries %}
+                    <option value="{{ c }}" {% if c == selected_country %}selected{% endif %}>
+                        {{ c }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-<h2>Sport-wise Medal Heatmap</h2>
-{% if fig_heatmap %}
-    {{ fig_heatmap | safe }}
-{% endif %}
+            <button type="submit" class="btn btn-filter">Show</button>
+        </form>
 
-<br>
-<a href="/">⬅ Back to Home</a>
+        <!-- Year-wise Medal Trend -->
+   <section class="analysis-card">
+    <div class="analysis-header">
+        <span class="analysis-badge">Trend</span>
+        <h2 class="analysis-title">Year-wise Medal Tally</h2>
+        <p class="analysis-subtitle">
+            Medal performance trend across Olympic editions for the selected country.
+        </p>
+    </div>
+
+    <div class="analysis-content">
+        {% if fig_line %}
+            {{ fig_line | safe }}
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+</section>
+
+        <!-- Top Athletes -->
+        <section class="analysis-card">
+    <div class="analysis-header">
+        <span class="analysis-badge">Athletes</span>
+        <h2 class="analysis-title">Top Athletes</h2>
+        <p class="analysis-subtitle">
+            Most successful athletes for the selected country.
+        </p>
+    </div>
+
+    <div class="analysis-content">
+        {{ top10_df | safe }}
+    </div>
+</section>
+
+        <!-- Heatmap -->
+       <section class="analysis-card">
+    <div class="analysis-header">
+        <span class="analysis-badge">Sports</span>
+        <h2 class="analysis-title">Sport-wise Medal Heatmap</h2>
+        <p class="analysis-subtitle">
+            Distribution of medals across sports for the selected country.
+        </p>
+    </div>
+
+    <div class="analysis-content">
+        {% if fig_heatmap %}
+            {{ fig_heatmap | safe }}
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+</section>
+<!-- ================= FOOTER ================= -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <div class="logo-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="8" r="6" />
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+                </svg>
+              </div>
+              <span>Olympics Analytics</span>
+            </div>
+
+            <p class="footer-description">
+              Explore comprehensive Olympic Games data and discover the stories
+              behind the medals.
+            </p>
+
+            <svg
+              class="footer-rings"
+              viewBox="0 0 200 90"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="40"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="70"
+                cy="55"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="100"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="130"
+                cy="55"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="160"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+            </svg>
+          </div>
+
+          <div class="footer-links">
+            <h4 class="footer-heading">Explore</h4>
+            <ul class="footer-list">
+              <li><a href="/medal-tally">Medal Tally</a></li>
+              <li><a href="/overall">Overall Analysis</a></li>
+              <li><a href="/country">Country Analysis</a></li>
+              <li><a href="/athlete">Athlete Analysis</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-social">
+            <h4 class="footer-heading">Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://github.com/Captain-23"
+                class="social-link"
+                aria-label="GitHub"
+                target="_blank"
+                rel="nooper noreferrer"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87
+                                     a3.37 3.37 0 0 0-.94-2.61
+                                     c3.14-.35 6.44-1.54 6.44-7
+                                     A5.44 5.44 0 0 0 20 4.77
+                                     A5.07 5.07 0 0 0 19.91 1
+                                     S18.73.65 16 2.48
+                                     a13.38 13.38 0 0 0-7 0
+                                     C6.27.65 5.09 1 5.09 1
+                                     A5.07 5.07 0 0 0 5 4.77
+                                     a5.44 5.44 0 0 0-1.5 3.78
+                                     c0 5.42 3.3 6.61 6.44 7
+                                     A3.37 3.37 0 0 0 9 18.13V22"
+                  />
+                </svg>
+              </a>
+
+              <a
+                href="https://x.com/ArnavAlok1401"
+                class="social-link"
+                aria-label="X (Twitter)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M4 3h4.6l4.1 5.9L17.8 3H21l-6.7 7.8L21.5 21H17l-4.5-6.4L6.9 21H3.7l7.2-8.3L4 3z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/arnav-alok-570a96321/"
+                class="social-link"
+                aria-label="LinkedIn"
+                target="_blank"
+                rel="nooper noreferrer"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7
+                                     a2 2 0 0 0-2-2
+                                     a2 2 0 0 0-2 2v7h-4v-7
+                                     a6 6 0 0 1 6-6z"
+                  />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>
+            © 2026 Olympics Analytics Dashboard. Data for educational purposes.
+          </p>
+        </div>
+      </div>
+    </footer>
+<!-- ================= JS ================= -->
+<script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileNav.classList.toggle('hidden');
+    });
+</script>
 
 </body>
 </html>

@@ -1,33 +1,365 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overall Analysis - Olympics Analytics Dashboard</title>
+    <meta name="description" content="Explore long-term Olympic trends across editions, nations, sports, and athletes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
 
-{% block title %}Overall Analysis{% endblock %}
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">
+            <div class="logo-icon">
+                <img src="{{ url_for('static', filename='images/olympic_logo.png') }}"
+                     alt="Olympic Logo"
+                     class="nav-logo-img">
+            </div>
+            <span class="logo-text">Olympics Analytics</span>
+        </a>
 
-{% block content %}
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/medal-tally" class="nav-link">Medal Tally</a>
+            <a href="/overall" class="nav-link active">Overall Analysis</a>
+            <a href="/country" class="nav-link">Country Analysis</a>
+            <a href="/athlete" class="nav-link">Athlete Analysis</a>
+        </div>
 
-<h1 class="mb-4">Overall Olympics Analysis</h1>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </div>
 
-<div class="row text-center mb-4">
-    <div class="col">Editions<br><b>{{ editions }}</b></div>
-    <div class="col">Cities<br><b>{{ cities }}</b></div>
-    <div class="col">Sports<br><b>{{ sports }}</b></div>
-    <div class="col">Events<br><b>{{ events }}</b></div>
-    <div class="col">Athletes<br><b>{{ athletes }}</b></div>
-    <div class="col">Nations<br><b>{{ nations }}</b></div>
-</div>
+    <div class="mobile-nav hidden" id="mobileNav">
+        <a href="/" class="mobile-nav-link">Home</a>
+        <a href="/medal-tally" class="mobile-nav-link">Medal Tally</a>
+        <a href="/overall" class="mobile-nav-link active">Overall Analysis</a>
+        <a href="/country" class="mobile-nav-link">Country Analysis</a>
+        <a href="/athlete" class="mobile-nav-link">Athlete Analysis</a>
+    </div>
+</nav>
 
-<hr>
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container page-header-content">
+        <span class="badge badge-gold">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <polyline points="3 17 9 11 13 15 21 7"/>
+    <polyline points="14 7 21 7 21 14"/>
+  </svg>
+  Overall Analysis
+</span>
+        <h1 class="page-title">Overall Olympics Analysis</h1>
+        <p class="page-subtitle">
+            Explore long-term trends across editions, nations, events, and athletes
+        </p>
+    </div>
+</section>
 
-<h3>Nations Over Time</h3>
-{{ fig_nations | safe }}
+<!-- Main Content -->
+<main class="main-content">
+    <div class="container">
 
-<hr>
+        <!-- Summary Cards -->
+        <div class="medal-summary">
+            <div class="medal-summary-card total">
+                <span class="medal-icon">📅</span>
+                <div class="medal-info">
+                    <span class="medal-count">{{ editions }}</span>
+                    <span class="medal-label">Editions</span>
+                </div>
+            </div>
 
-<h3>Events Over Time</h3>
-{{ fig_events | safe }}
+            <div class="medal-summary-card gold">
+                <span class="medal-icon">🏙️</span>
+                <div class="medal-info">
+                    <span class="medal-count">{{ cities }}</span>
+                    <span class="medal-label">Cities</span>
+                </div>
+            </div>
 
-<hr>
+            <div class="medal-summary-card silver">
+                <span class="medal-icon">🏟️</span>
+                <div class="medal-info">
+                    <span class="medal-count">{{ sports }}</span>
+                    <span class="medal-label">Sports</span>
+                </div>
+            </div>
 
-<h3>Athletes Over Time</h3>
-{{ fig_athletes | safe }}
+            <div class="medal-summary-card bronze">
+                <span class="medal-icon">🎯</span>
+                <div class="medal-info">
+                    <span class="medal-count">{{ events }}</span>
+                    <span class="medal-label">Events</span>
+                </div>
+            </div>
 
-{% endblock %}
+            <div class="medal-summary-card total">
+                <span class="medal-icon">🏃</span>
+                <div class="medal-info">
+                    <span class="medal-count">{{ athletes }}</span>
+                    <span class="medal-label">Athletes</span>
+                </div>
+            </div>
+
+            <div class="medal-summary-card total">
+                <span class="medal-icon">🌍</span>
+                <div class="medal-info">
+                    <span class="medal-count">{{ nations }}</span>
+                    <span class="medal-label">Nations</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+         <section class="analysis-card">
+    <div class="analysis-header">
+        <span class="analysis-badge">Nations</span>
+        <h2 class="analysis-title">Nations Over Time</h2>
+        <p class="analysis-subtitle">
+            Growth in the number of participating nations across Olympic editions.
+        </p>
+    </div>
+
+    <div class="analysis-content">
+        {% if fig_nations %}
+            {{ fig_nations | safe }}
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="analysis-card">
+    <div class="analysis-header">
+        <span class="analysis-badge">Events</span>
+        <h2 class="analysis-title">Events Over Time</h2>
+        <p class="analysis-subtitle">
+            Increase in Olympic events across different editions.
+        </p>
+    </div>
+
+    <div class="analysis-content">
+        {% if fig_events %}
+            {{ fig_events | safe }}
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+</section>
+        
+<section class="analysis-card">
+    <div class="analysis-header">
+        <span class="analysis-badge">Athletes</span>
+        <h2 class="analysis-title">Athletes Over Time</h2>
+        <p class="analysis-subtitle">
+            Trend of athlete participation throughout Olympic history.
+        </p>
+    </div>
+
+    <div class="analysis-content">
+        {% if fig_athletes %}
+            {{ fig_athletes | safe }}
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+</section>
+
+    </div>
+</main>
+
+<!-- ================= FOOTER ================= -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <div class="logo-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="8" r="6" />
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+                </svg>
+              </div>
+              <span>Olympics Analytics</span>
+            </div>
+
+            <p class="footer-description">
+              Explore comprehensive Olympic Games data and discover the stories
+              behind the medals.
+            </p>
+
+            <svg
+              class="footer-rings"
+              viewBox="0 0 200 90"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="40"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="70"
+                cy="55"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="100"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="130"
+                cy="55"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="160"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+            </svg>
+          </div>
+
+          <div class="footer-links">
+            <h4 class="footer-heading">Explore</h4>
+            <ul class="footer-list">
+              <li><a href="/medal-tally">Medal Tally</a></li>
+              <li><a href="/overall">Overall Analysis</a></li>
+              <li><a href="/country">Country Analysis</a></li>
+              <li><a href="/athlete">Athlete Analysis</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-social">
+            <h4 class="footer-heading">Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://github.com/Captain-23"
+                class="social-link"
+                aria-label="GitHub"
+                target="_blank"
+                rel="nooper noreferrer"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87
+                                     a3.37 3.37 0 0 0-.94-2.61
+                                     c3.14-.35 6.44-1.54 6.44-7
+                                     A5.44 5.44 0 0 0 20 4.77
+                                     A5.07 5.07 0 0 0 19.91 1
+                                     S18.73.65 16 2.48
+                                     a13.38 13.38 0 0 0-7 0
+                                     C6.27.65 5.09 1 5.09 1
+                                     A5.07 5.07 0 0 0 5 4.77
+                                     a5.44 5.44 0 0 0-1.5 3.78
+                                     c0 5.42 3.3 6.61 6.44 7
+                                     A3.37 3.37 0 0 0 9 18.13V22"
+                  />
+                </svg>
+              </a>
+
+              <a
+                href="https://x.com/ArnavAlok1401"
+                class="social-link"
+                aria-label="X (Twitter)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M4 3h4.6l4.1 5.9L17.8 3H21l-6.7 7.8L21.5 21H17l-4.5-6.4L6.9 21H3.7l7.2-8.3L4 3z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/arnav-alok-570a96321/"
+                class="social-link"
+                aria-label="LinkedIn"
+                target="_blank"
+                rel="nooper noreferrer"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7
+                                     a2 2 0 0 0-2-2
+                                     a2 2 0 0 0-2 2v7h-4v-7
+                                     a6 6 0 0 1 6-6z"
+                  />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>
+            © 2026 Olympics Analytics Dashboard. Data for educational purposes.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+<script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileNav.classList.toggle('hidden');
+    });
+</script>
+
+</body>
+</html>

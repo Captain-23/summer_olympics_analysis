@@ -1,0 +1,42 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ===== Virtual Environment =====
+venv/
+env/
+.venv/
+
+# ===== Flask =====
+instance/
+.webassets-cache/
+
+# ===== Jupyter / Data Science =====
+.ipynb_checkpoints/
+*.ipynb
+
+# ===== OS Files =====
+.DS_Store
+Thumbs.db
+
+# ===== IDE / Editor =====
+.vscode/
+.idea/
+
+# ===== Logs =====
+*.log
+
+# ===== Environment variables =====
+.env
+
+# ===== Data files (optional) =====
+# Uncomment if you DON'T want raw data in git
+# data/
+# *.csv
+
+# ===== Build / Cache =====
+build/
+dist/
+*.egg-info/

@@ -24,13 +24,21 @@ def medal_tally():
 
     medal_df = helper.fetch_medal_tally(df, selected_year, selected_country)
 
+    total_gold = int(medal_df['Gold'].sum())
+    total_silver = int(medal_df['Silver'].sum())
+    total_bronze = int(medal_df['Bronze'].sum())
+    total_medals = int(medal_df['Total'].sum())
     return render_template(
         "medal_tally.html",
         years=years,
         countries=countries,
         selected_year=selected_year,
         selected_country=selected_country,
-        medal_df=medal_df
+        medal_df=medal_df.to_html(classes="dataframe", index=False, border=0),
+        total_gold=total_gold,
+        total_silver=total_silver,
+        total_bronze=total_bronze,
+        total_medals=total_medals
     )
 
 # OVERALL ANALYSIS
@@ -78,7 +86,7 @@ def country():
 
     yearwise_df = helper.yearwise_medal_tally(df, selected_country)
     heatmap_df = helper.country_event_heatmap(df, selected_country)
-    top10_df = helper.most_successful_countrywise(df, selected_country)
+    top10_df = helper.most_successful_countrywise(df, selected_country).to_html(classes='dataframe', index=False, border=0)
 
     fig_line = px.line(yearwise_df, x="Year", y="Medal") if not yearwise_df.empty else None
     fig_heatmap = px.imshow(heatmap_df) if not heatmap_df.empty else None
@@ -113,7 +121,7 @@ def athlete():
         "athlete.html",
         sports = sports,
         selected_sport = selected_sport,
-        top_athletes_df = top_athletes_df,
+        top_athletes_df = top_athletes_df.to_html(classes='dataframe', index=False, border=0),
         fig_hw=fig_hw.to_html(full_html = False) if fig_hw else None,
         fig_gender = fig_gender.to_html(full_html = False)
     

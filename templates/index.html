@@ -1,17 +1,750 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olympics Analysis</title>
-</head>
-<body>
-    <h1>Olympics Data Analysis Dashboard</h1>
-    <ul>
-        <li><a href="/medal-tally">Medal Tally</a></li>
-        <li><a href="/overall">Overall Analysis</a></li>
-        <li><a href="/country">Country Wise Analysis</a></li>
-        <li><a href="/athlete">Athlete Wise Analysis</a></li>
-    </ul>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore the rich history of the Olympic Games through interactive data analysis. Discover medal counts, athlete achievements, and country performances."
+    />
+    <title>Olympics Data Analysis Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/index.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="#" class="nav-logo">
+          <div class="logo-icon">
+            <img
+              src="{{ url_for('static', filename='images/olympic_logo.png') }}"
+              alt="Olympic Logo"
+              class="nav-logo-img"
+            />
+          </div>
+          <span class="logo-text">Olympics Analytics</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="/" class="nav-link active">Home</a>
+          <a href="/medal-tally" class="nav-link">Medal Tally</a>
+          <a href="/overall" class="nav-link">Overall Analysis</a>
+          <a href="/country" class="nav-link">Country Analysis</a>
+          <a href="/athlete" class="nav-link">Athlete Analysis</a>
+        </div>
+
+        <button class="mobile-menu-btn" id="menuBtn" aria-label="Toggle menu">
+          <svg
+            class="menu-icon"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+          <svg
+            class="close-icon hidden"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="mobile-nav hidden" id="mobileNav">
+        <a href="/" class="mobile-nav-link active">Home</a>
+        <a href="/medal-tally" class="mobile-nav-link">Medal Tally</a>
+        <a href="/overall" class="mobile-nav-link">Overall Analysis</a>
+        <a href="/country" class="mobile-nav-link">Country Analysis</a>
+        <a href="/athlete" class="mobile-nav-link">Athlete Analysis</a>
+      </div>
+    </nav>
+
+    <main>
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-bg">
+          <div class="hero-glow hero-glow-1"></div>
+          <div class="hero-glow hero-glow-2"></div>
+        </div>
+
+        <div class="hero-content">
+          <!-- Olympic Rings -->
+          <div class="olympic-rings-container">
+            <svg
+              class="olympic-rings"
+              viewBox="0 0 200 90"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                class="ring ring-1"
+                cx="40"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="#0081C8"
+                stroke-width="4"
+              />
+              <circle
+                class="ring ring-2"
+                cx="70"
+                cy="55"
+                r="25"
+                fill="none"
+                stroke="#FCB131"
+                stroke-width="4"
+              />
+              <circle
+                class="ring ring-3"
+                cx="100"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="#333333"
+                stroke-width="4"
+              />
+              <circle
+                class="ring ring-4"
+                cx="130"
+                cy="55"
+                r="25"
+                fill="none"
+                stroke="#00A651"
+                stroke-width="4"
+              />
+              <circle
+                class="ring ring-5"
+                cx="160"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="#EE334E"
+                stroke-width="4"
+              />
+            </svg>
+          </div>
+
+          <h1 class="hero-title">
+            Olympics Data
+            <span class="hero-title-accent">Analysis Dashboard</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            Explore the rich history of the Olympic Games through interactive
+            data analysis. Discover medal counts, athlete achievements, and
+            country performances.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="/medal-tally" class="btn btn-primary">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="8" r="6" />
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+              </svg>
+              View Medal Tally
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="/overall" class="btn btn-secondary"> Explore Analysis </a>
+          </div>
+        </div>
+      </section>
+            <!-- Stats Section -->
+      <section class="stats-section">
+        <div class="container">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="8" r="6"/>
+      <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+    </svg>
+  </span>
+              <p class="stat-value">120+</p>
+              <p class="stat-label">Years of History</p>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="2" y1="12" x2="22" y2="12"/>
+      <path d="M12 2a15.3 15.3 0 0 1 4 10
+               15.3 15.3 0 0 1-4 10
+               15.3 15.3 0 0 1-4-10
+               15.3 15.3 0 0 1 4-10z"/>
+    </svg>
+  </span>
+              <p class="stat-value">200+</p>
+              <p class="stat-label">Nations</p>
+            </div>
+            <div class="stat-card">
+  <span class="stat-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="7" r="4"/>
+      <path d="M5.5 21a6.5 6.5 0 0 1 13 0"/>
+    </svg>
+  </span>
+  <p class="stat-value">10,000+</p>
+  <p class="stat-label">Athletes</p>
+</div>
+            <div class="stat-card">
+              <span class="stat-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <circle cx="12" cy="12" r="6"/>
+      <circle cx="12" cy="12" r="2"/>
+    </svg>
+  </span>
+              <p class="stat-value">300+</p>
+              <p class="stat-label">Events</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Countdown Section -->
+      <section class="countdown-section">
+        <div class="container">
+          <div class="countdown-header">
+            <span class="badge badge-gold">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              Next Olympic Games
+            </span>
+            <h2 class="countdown-title">Los Angeles 2028</h2>
+            <p class="countdown-location">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Los Angeles, United States
+            </p>
+          </div>
+
+          <div class="countdown-timer" id="countdown">
+            <div class="countdown-item">
+              <span class="countdown-value" id="days">000</span>
+              <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-value" id="hours">00</span>
+              <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-value" id="minutes">00</span>
+              <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-value" id="seconds">00</span>
+              <span class="countdown-label">Seconds</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Features Section -->
+      <section class="features-section" id="features">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Explore the Dashboard</h2>
+            <p class="section-subtitle">
+              Dive deep into Olympic history with our comprehensive analysis
+              tools. Each section offers unique insights into the world's
+              greatest sporting event.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <a
+              href="/medal-tally"
+              class="feature-card feature-card-yellow"
+              id="medal-tally"
+            >
+              <div class="feature-icon">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="8" r="6" />
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+                </svg>
+              </div>
+              <h3 class="feature-title">Medal Tally</h3>
+              <p class="feature-description">
+                View comprehensive medal counts by country and year. Compare
+                performances across different Olympic editions.
+              </p>
+            </a>
+
+            <a
+              href="/overall"
+              class="feature-card feature-card-blue"
+              id="overall"
+            >
+              <div class="feature-icon">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                  <polyline points="17 6 23 6 23 12" />
+                </svg>
+              </div>
+              <h3 class="feature-title">Overall Analysis</h3>
+              <p class="feature-description">
+                Explore historical trends in athletes, participating nations,
+                and sporting events over time.
+              </p>
+            </a>
+
+            <a
+              href="/country"
+              class="feature-card feature-card-green"
+              id="country"
+            >
+              <div class="feature-icon">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path
+                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                  />
+                </svg>
+              </div>
+              <h3 class="feature-title">Country Analysis</h3>
+              <p class="feature-description">
+                Analyze individual country performances, medal distributions,
+                and sporting strengths.
+              </p>
+            </a>
+
+            <a
+              href="/athlete"
+              class="feature-card feature-card-red"
+              id="athlete"
+            >
+              <div class="feature-icon">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <h3 class="feature-title">Athlete Analysis</h3>
+              <p class="feature-description">
+                Study athlete success patterns, age distributions, and gender
+                participation trends.
+              </p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section class="about-section">
+        <div class="container">
+          <div class="about-grid">
+            <div class="about-content">
+              <h2 class="section-title">About the Olympic Games</h2>
+              <div class="about-text">
+                <p>
+                  The modern Olympic Games are a major international multi-sport
+                  event that brings together athletes from almost every nation
+                  in the world. First held in Athens in 1896, the Summer Olympic
+                  Games are organized every four years.
+                </p>
+                <p>
+                  Over time, the Olympics have grown to include hundreds of
+                  events across dozens of sports, showcasing the highest level
+                  of human performance, dedication, and sportsmanship while
+                  promoting peace and cultural exchange among nations.
+                </p>
+              </div>
+              <div class="about-medals">
+                <div class="medal-icons">
+                  <div class="medal medal-gold">🥇</div>
+                  <div class="medal medal-silver">🥈</div>
+                  <div class="medal medal-bronze">🥉</div>
+                </div>
+                <span class="medal-text"
+                  >Celebrating excellence since 1896</span
+                >
+              </div>
+            </div>
+
+            <div class="about-visual">
+              <div class="about-card">
+                <svg
+                  class="about-rings"
+                  viewBox="0 0 200 90"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="40"
+                    cy="35"
+                    r="25"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.2)"
+                    stroke-width="4"
+                  />
+                  <circle
+                    cx="70"
+                    cy="55"
+                    r="25"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.2)"
+                    stroke-width="4"
+                  />
+                  <circle
+                    cx="100"
+                    cy="35"
+                    r="25"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.2)"
+                    stroke-width="4"
+                  />
+                  <circle
+                    cx="130"
+                    cy="55"
+                    r="25"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.2)"
+                    stroke-width="4"
+                  />
+                  <circle
+                    cx="160"
+                    cy="35"
+                    r="25"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.2)"
+                    stroke-width="4"
+                  />
+                </svg>
+                <div class="about-card-content">
+                  <p class="about-year">1896</p>
+                  <p class="about-location">Athens, Greece</p>
+                  <p class="about-subtitle">First Modern Olympics</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Navigation Guide -->
+      <section class="guide-section">
+        <div class="container">
+          <h3 class="guide-title">Ready to Explore?</h3>
+          <p class="guide-text">
+            Use the navigation above to dive into different sections of the
+            dashboard and discover fascinating insights about Olympic history.
+          </p>
+         
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <div class="logo-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="8" r="6" />
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+                </svg>
+              </div>
+              <span>Olympics Analytics</span>
+            </div>
+
+            <p class="footer-description">
+              Explore comprehensive Olympic Games data and discover the stories
+              behind the medals.
+            </p>
+
+            <svg
+              class="footer-rings"
+              viewBox="0 0 200 90"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="40"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="70"
+                cy="55"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="100"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="130"
+                cy="55"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+              <circle
+                cx="160"
+                cy="35"
+                r="25"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                stroke-width="3"
+              />
+            </svg>
+          </div>
+
+          <div class="footer-links">
+            <h4 class="footer-heading">Explore</h4>
+            <ul class="footer-list">
+              <li><a href="/medal-tally">Medal Tally</a></li>
+              <li><a href="/overall">Overall Analysis</a></li>
+              <li><a href="/country">Country Analysis</a></li>
+              <li><a href="/athlete">Athlete Analysis</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-social">
+            <h4 class="footer-heading">Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://github.com/Captain-23"
+                class="social-link"
+                aria-label="GitHub"
+                target="_blank"
+                rel="nooper noreferrer"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87
+                                     a3.37 3.37 0 0 0-.94-2.61
+                                     c3.14-.35 6.44-1.54 6.44-7
+                                     A5.44 5.44 0 0 0 20 4.77
+                                     A5.07 5.07 0 0 0 19.91 1
+                                     S18.73.65 16 2.48
+                                     a13.38 13.38 0 0 0-7 0
+                                     C6.27.65 5.09 1 5.09 1
+                                     A5.07 5.07 0 0 0 5 4.77
+                                     a5.44 5.44 0 0 0-1.5 3.78
+                                     c0 5.42 3.3 6.61 6.44 7
+                                     A3.37 3.37 0 0 0 9 18.13V22"
+                  />
+                </svg>
+              </a>
+
+              <a
+                href="https://x.com/ArnavAlok1401"
+                class="social-link"
+                aria-label="X (Twitter)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M4 3h4.6l4.1 5.9L17.8 3H21l-6.7 7.8L21.5 21H17l-4.5-6.4L6.9 21H3.7l7.2-8.3L4 3z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/arnav-alok-570a96321/"
+                class="social-link"
+                aria-label="LinkedIn"
+                target="_blank"
+                rel="nooper noreferrer"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7
+                                     a2 2 0 0 0-2-2
+                                     a2 2 0 0 0-2 2v7h-4v-7
+                                     a6 6 0 0 1 6-6z"
+                  />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>
+            © 2026 Olympics Analytics Dashboard. Data for educational purposes.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu toggle
+      const menuBtn = document.getElementById("menuBtn");
+      const mobileNav = document.getElementById("mobileNav");
+      const menuIcon = menuBtn.querySelector(".menu-icon");
+      const closeIcon = menuBtn.querySelector(".close-icon");
+
+      menuBtn.addEventListener("click", () => {
+        mobileNav.classList.toggle("hidden");
+        menuIcon.classList.toggle("hidden");
+        closeIcon.classList.toggle("hidden");
+      });
+
+      // Countdown timer
+      const olympicsDate = new Date("July 14, 2028 00:00:00").getTime();
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = olympicsDate - now;
+
+        if (distance < 0) {
+          document.getElementById("countdown").innerHTML =
+            "<p>The Olympics are live!</p>";
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").textContent = String(days).padStart(
+          3,
+          "0"
+        );
+        document.getElementById("hours").textContent = String(hours).padStart(
+          2,
+          "0"
+        );
+        document.getElementById("minutes").textContent = String(
+          minutes
+        ).padStart(2, "0");
+        document.getElementById("seconds").textContent = String(
+          seconds
+        ).padStart(2, "0");
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    </script>
+  </body>
 </html>
