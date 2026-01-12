@@ -2,11 +2,13 @@ from flask import Flask, render_template, request
 import pandas as pd
 import helper, preprocessor
 import plotly.express as px
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
 
-df = pd.read_csv('athlete_events.csv')
-region_df = pd.read_csv('noc_regions.csv')
+df = pd.read_csv(os.path.join(BASE_DIR, "athlete_events.csv"))
+region_df = pd.read_csv(os.path.join(BASE_DIR, "noc_regions.csv"))
 df = preprocessor.preprocess(df, region_df)
 
 ## Flask Route
@@ -126,7 +128,4 @@ def athlete():
         fig_gender = fig_gender.to_html(full_html = False)
     
     )
-import os
 
-if __name__ == "__main__":
-    app.run(debug=False)
