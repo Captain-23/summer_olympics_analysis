@@ -86,8 +86,8 @@ http://127.0.0.1:5000
 📚 Learning Outcomes
 	•	Migrated a project from Streamlit to Flask
 	•	Learned Flask routing and templating
-	•	Understood real-world deployment using Render
-	•	Improved backend–frontend integration skills
+	•	Understood real world deployment using Render
+	•	Improved backend frontend integration skills
 
 ---
 
