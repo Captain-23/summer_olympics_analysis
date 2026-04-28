@@ -167,40 +167,58 @@
 
         <!-- Pagination -->
         <div class="pagination">
-          <button class="pagination-btn" disabled>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
+          <a
+            href="{% if current_page > 1 %}/medal-tally?year={{ selected_year }}&country={{ selected_country }}&page={{ current_page - 1 }}{% else %}#{% endif %}"
+            class="pagination-btn {% if current_page <= 1 %}disabled{% endif %}"
+            {% if current_page <= 1 %}aria-disabled="true" tabindex="-1"{% endif %}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="15 18 9 12 15 6" />
             </svg>
             Previous
-          </button>
+          </a>
+
           <div class="pagination-pages">
-            <button class="pagination-page active">1</button>
-            <button class="pagination-page">2</button>
-            <button class="pagination-page">3</button>
-            <span class="pagination-dots">...</span>
-            <button class="pagination-page">12</button>
+            {% set start_page = [1, current_page - 2] | max %}
+            {% set end_page = [total_pages, current_page + 2] | min %}
+
+            {% if start_page > 1 %}
+              <a href="/medal-tally?year={{ selected_year }}&country={{ selected_country }}&page=1" class="pagination-page">1</a>
+              {% if start_page > 2 %}
+                <span class="pagination-dots">...</span>
+              {% endif %}
+            {% endif %}
+
+            {% for p in range(start_page, end_page + 1) %}
+              <a
+                href="/medal-tally?year={{ selected_year }}&country={{ selected_country }}&page={{ p }}"
+                class="pagination-page {% if p == current_page %}active{% endif %}"
+              >{{ p }}</a>
+            {% endfor %}
+
+            {% if end_page < total_pages %}
+              {% if end_page < total_pages - 1 %}
+                <span class="pagination-dots">...</span>
+              {% endif %}
+              <a href="/medal-tally?year={{ selected_year }}&country={{ selected_country }}&page={{ total_pages }}" class="pagination-page">{{ total_pages }}</a>
+            {% endif %}
           </div>
-          <button class="pagination-btn">
+
+          <a
+            href="{% if current_page < total_pages %}/medal-tally?year={{ selected_year }}&country={{ selected_country }}&page={{ current_page + 1 }}{% else %}#{% endif %}"
+            class="pagination-btn {% if current_page >= total_pages %}disabled{% endif %}"
+            {% if current_page >= total_pages %}aria-disabled="true" tabindex="-1"{% endif %}
+          >
             Next
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="9 18 15 12 9 6" />
             </svg>
-          </button>
+          </a>
         </div>
+
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--muted-foreground);">
+          Showing {{ ((current_page - 1) * 10) + 1 }}–{{ [current_page * 10, total_rows] | min }} of {{ total_rows }} entries
+        </p>
       </div>
     </main>
 

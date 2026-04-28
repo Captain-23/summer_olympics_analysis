@@ -19,10 +19,13 @@ def home():
 # MEDAL TALLY
 @app.route("/medal-tally")
 def medal_tally():
+    import math
     years, countries = helper.country_year_list(df)
 
-    selected_year= request.args.get("year", "Overall")
+    selected_year = request.args.get("year", "Overall")
     selected_country = request.args.get("country", "Overall")
+    page = request.args.get("page", 1, type=int)
+    per_page = 10
 
     medal_df = helper.fetch_medal_tally(df, selected_year, selected_country)
 
@@ -30,17 +33,29 @@ def medal_tally():
     total_silver = int(medal_df['Silver'].sum())
     total_bronze = int(medal_df['Bronze'].sum())
     total_medals = int(medal_df['Total'].sum())
+
+    total_rows = len(medal_df)
+    total_pages = max(1, math.ceil(total_rows / per_page))
+    page = max(1, min(page, total_pages))
+
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+    paginated_df = medal_df.iloc[start_idx:end_idx]
+
     return render_template(
         "medal_tally.html",
         years=years,
         countries=countries,
         selected_year=selected_year,
         selected_country=selected_country,
-        medal_df=medal_df.to_html(classes="dataframe", index=False, border=0),
+        medal_df=paginated_df.to_html(classes="dataframe", index=False, border=0),
         total_gold=total_gold,
         total_silver=total_silver,
         total_bronze=total_bronze,
-        total_medals=total_medals
+        total_medals=total_medals,
+        current_page=page,
+        total_pages=total_pages,
+        total_rows=total_rows
     )
 
 # OVERALL ANALYSIS
@@ -73,9 +88,9 @@ def overall():
         nations_over_time = nations_over_time,
         events_over_time = events_over_time,
         athletes_over_time = athletes_over_time,
-        fig_nations = fig_nations.to_html(full_html=False),
-        fig_events = fig_events.to_html(full_html=False),
-        fig_athletes = fig_athletes.to_html(full_html=False)
+        fig_nations = fig_nations.to_html(full_html=False, config={'responsive': True}),
+        fig_events = fig_events.to_html(full_html=False, config={'responsive': True}),
+        fig_athletes = fig_athletes.to_html(full_html=False, config={'responsive': True})
     )
 
 # COUNTRY WISE ANALYSIS
@@ -98,8 +113,8 @@ def country():
         countries = countries,
         selected_country = selected_country,
         top10_df = top10_df,
-        fig_line = fig_line.to_html(full_html=False) if fig_line else None,
-        fig_heatmap = fig_heatmap.to_html(full_html = False) if fig_heatmap else None
+        fig_line = fig_line.to_html(full_html=False, config={'responsive': True}) if fig_line else None,
+        fig_heatmap = fig_heatmap.to_html(full_html = False, config={'responsive': True}) if fig_heatmap else None
 
     )
 
@@ -124,8 +139,8 @@ def athlete():
         sports = sports,
         selected_sport = selected_sport,
         top_athletes_df = top_athletes_df.to_html(classes='dataframe', index=False, border=0),
-        fig_hw=fig_hw.to_html(full_html = False) if fig_hw else None,
-        fig_gender = fig_gender.to_html(full_html = False)
+        fig_hw=fig_hw.to_html(full_html = False, config={'responsive': True}) if fig_hw else None,
+        fig_gender = fig_gender.to_html(full_html = False, config={'responsive': True})
     
     )
 

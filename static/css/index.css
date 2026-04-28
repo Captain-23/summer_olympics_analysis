@@ -1076,8 +1076,14 @@ img, svg {
 
 /* ===== Main Content ===== */
 .main-content {
-  padding: 2rem 0 4rem;
+  padding: 1.5rem 0 3rem;
   min-height: 60vh;
+}
+
+@media (min-width: 640px) {
+  .main-content {
+    padding: 2rem 0 4rem;
+  }
 }
 
 /* ===== Filter Bar ===== */
@@ -1144,8 +1150,15 @@ img, svg {
 .medal-summary {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 0.75rem;
   margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .medal-summary {
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (min-width: 768px) {
@@ -1226,7 +1239,8 @@ img, svg {
   border-radius: 12px;
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin-bottom: 2rem;
 }
 
@@ -1242,11 +1256,17 @@ img, svg {
 }
 
 .dataframe th {
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 0.75rem;
   text-align: left;
   font-weight: 600;
   color: var(--foreground);
   white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .dataframe th {
+    padding: 1rem 1.25rem;
+  }
 }
 
 .dataframe th.text-center,
@@ -1268,8 +1288,14 @@ img, svg {
 }
 
 .dataframe td {
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 0.75rem;
   vertical-align: middle;
+}
+
+@media (min-width: 640px) {
+  .dataframe td {
+    padding: 1rem 1.25rem;
+  }
 }
 
 .medal-header {
@@ -1368,9 +1394,11 @@ img, svg {
   border-color: var(--muted-foreground);
 }
 
-.pagination-btn:disabled {
+.pagination-btn:disabled,
+.pagination-btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .pagination-pages {
@@ -1410,394 +1438,16 @@ img, svg {
   padding: 0 0.25rem;
 }
 
-
-/* ===== Page Header ===== */
-.page-header {
-  background: var(--gradient-hero);
-  padding: 8rem 1rem 3rem;
-}
-
-@media (min-width: 640px) {
-  .page-header {
-    padding: 9rem 1.5rem 4rem;
-  }
-}
-
-.page-header-content {
-  text-align: center;
-}
-
-.page-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--primary-foreground);
-  margin-bottom: 0.75rem;
-}
-
-@media (min-width: 640px) {
-  .page-title {
-    font-size: 2.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .page-title {
-    font-size: 3rem;
-  }
-}
-
-.page-subtitle {
-  max-width: 600px;
-  margin: 0 auto;
-  color: hsla(0, 0%, 100%, 0.8);
-  font-size: 1rem;
-}
-
-@media (min-width: 640px) {
-  .page-subtitle {
-    font-size: 1.125rem;
-  }
-}
-
-/* ===== Main Content ===== */
-.main-content {
-  padding: 2rem 0 4rem;
-  min-height: 60vh;
-}
-
-/* ===== Filter Bar ===== */
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: flex-end;
-  background: var(--card);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border);
-  margin-bottom: 2rem;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  flex: 1;
-  min-width: 150px;
-}
-
-.filter-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--muted-foreground);
-}
-
-.filter-select {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--background);
-  color: var(--foreground);
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.filter-select:hover {
-  border-color: var(--muted-foreground);
-}
-
-.filter-select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px hsla(220, 70%, 25%, 0.1);
-}
-
-.btn-filter {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  padding: 0.75rem 1.5rem;
-  white-space: nowrap;
-}
-
-.btn-filter:hover {
-  background: hsl(220, 70%, 30%);
-}
-
-/* ===== Medal Summary ===== */
-.medal-summary {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-@media (min-width: 768px) {
-  .medal-summary {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.medal-summary-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.25rem;
-  border-radius: 12px;
-  background: var(--card);
-  border: 2px solid;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s;
-}
-
-.medal-summary-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.medal-summary-card.gold {
-  border-color: hsla(45, 100%, 51%, 0.3);
-  background: linear-gradient(135deg, hsla(45, 100%, 51%, 0.05) 0%, var(--card) 100%);
-}
-
-.medal-summary-card.silver {
-  border-color: hsla(220, 10%, 75%, 0.4);
-  background: linear-gradient(135deg, hsla(220, 10%, 75%, 0.1) 0%, var(--card) 100%);
-}
-
-.medal-summary-card.bronze {
-  border-color: hsla(30, 60%, 45%, 0.3);
-  background: linear-gradient(135deg, hsla(30, 60%, 45%, 0.05) 0%, var(--card) 100%);
-}
-
-.medal-summary-card.total {
-  border-color: hsla(220, 70%, 25%, 0.2);
-  background: linear-gradient(135deg, hsla(220, 70%, 25%, 0.05) 0%, var(--card) 100%);
-}
-
-.medal-summary-card .medal-icon {
-  font-size: 2rem;
-}
-
-.medal-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.medal-count {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-@media (min-width: 640px) {
-  .medal-count {
-    font-size: 1.75rem;
-  }
-}
-
-.medal-label {
-  font-size: 0.75rem;
-  color: var(--muted-foreground);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* ===== Data Table ===== */
-.table-wrapper {
-  background: var(--card);
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  margin-bottom: 2rem;
-}
-
-.dataframe {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-}
-
-.dataframe thead {
-  background: hsla(220, 15%, 94%, 0.5);
-  border-bottom: 2px solid var(--border);
-}
-
-.dataframe th {
-  padding: 1rem 1.25rem;
-  text-align: left;
-  font-weight: 600;
-  color: var(--foreground);
-  white-space: nowrap;
-}
-
-.dataframe th.text-center,
-.dataframe td.text-center {
-  text-align: center;
-}
-
-.dataframe tbody tr {
-  border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
-}
-
-.dataframe tbody tr:hover {
-  background: hsla(220, 15%, 94%, 0.3);
-}
-
-.dataframe tbody tr:last-child {
-  border-bottom: none;
-}
-
-.dataframe td {
-  padding: 1rem 1.25rem;
-  vertical-align: middle;
-}
-
-.medal-header {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.rank {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.875rem;
-  background: var(--muted);
-  color: var(--muted-foreground);
-}
-
-.rank-1 {
-  background: var(--gold);
-  color: var(--accent-foreground);
-}
-
-.rank-2 {
-  background: var(--silver);
-  color: var(--foreground);
-}
-
-.rank-3 {
-  background: var(--bronze);
-  color: white;
-}
-
-.country-name {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-}
-
-.medal-cell {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 36px;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-.medal-cell.gold {
-  background: hsla(45, 100%, 51%, 0.15);
-  color: hsl(35, 80%, 35%);
-}
-
-.medal-cell.silver {
-  background: hsla(220, 10%, 75%, 0.2);
-  color: hsl(220, 10%, 40%);
-}
-
-.medal-cell.bronze {
-  background: hsla(30, 60%, 45%, 0.15);
-  color: hsl(30, 60%, 35%);
-}
-
-/* ===== Pagination ===== */
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.pagination-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--foreground);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.pagination-btn:hover:not(:disabled) {
-  background: var(--muted);
-  border-color: var(--muted-foreground);
-}
-
-.pagination-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.pagination-pages {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.pagination-page {
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--muted-foreground);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.pagination-page:hover {
-  background: var(--muted);
-  color: var(--foreground);
-}
-
-.pagination-page.active {
-  background: var(--primary);
-  color: var(--primary-foreground);
-}
-
-.pagination-dots {
-  color: var(--muted-foreground);
-  padding: 0 0.25rem;
-}
 
 /* ===== Analysis Section (Country / Athlete pages) ===== */
 .analysis-section {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .analysis-section {
+    margin-bottom: 3rem;
+  }
 }
 
 .analysis-header {
@@ -1808,8 +1458,15 @@ img, svg {
   );
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 1.5rem 1.75rem;
-  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .analysis-header {
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .analysis-badge {
@@ -1827,42 +1484,127 @@ img, svg {
 
 .analysis-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 0.35rem;
   color: var(--foreground);
 }
 
+@media (min-width: 640px) {
+  .analysis-title {
+    font-size: 1.5rem;
+  }
+}
+
 .analysis-subtitle {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--muted-foreground);
   max-width: 600px;
+}
+
+@media (min-width: 640px) {
+  .analysis-subtitle {
+    font-size: 0.9rem;
+  }
 }
 
 /* ===== Unified Analysis Card ===== */
 .analysis-card {
   background: var(--card);
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-md);
-  padding: 1.75rem;
-  margin-bottom: 3rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.analysis-header {
-  padding-bottom: 1.25rem;
-  margin-bottom: 1.25rem;
+@media (min-width: 640px) {
+  .analysis-card {
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-bottom: 3rem;
+  }
+}
+
+.analysis-card .analysis-header {
+  padding: 0;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
   border-bottom: 1px solid var(--border);
+  background: none;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+@media (min-width: 640px) {
+  .analysis-card .analysis-header {
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
 }
 
 .analysis-content {
   width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* ===== Footer full-width fix (no overflow) ===== */
-.footer {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  margin-bottom: calc(50% - 50vw);
+/* Make Plotly charts responsive */
+.analysis-content .plotly-graph-div,
+.analysis-content .js-plotly-plot {
+  width: 100% !important;
+}
+
+.analysis-content .dataframe {
+  min-width: 400px;
+}
+
+/* ===== Responsive: Pagination on small screens ===== */
+@media (max-width: 480px) {
+  .pagination {
+    gap: 0.5rem;
+  }
+
+  .pagination-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .pagination-page {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+}
+
+/* ===== Responsive: Filter bar stacks fully on very small screens ===== */
+@media (max-width: 480px) {
+  .filter-bar {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .filter-group {
+    min-width: 100%;
+  }
+
+  .btn-filter {
+    width: 100%;
+    text-align: center;
+  }
+
+  .medal-summary-card {
+    padding: 0.85rem;
+    gap: 0.65rem;
+  }
+
+  .medal-summary-card .medal-icon {
+    font-size: 1.5rem;
+  }
+
+  .medal-count {
+    font-size: 1.25rem;
+  }
 }
